@@ -45,7 +45,7 @@ def get_movie_detail(movie):
     typelist = []
     for atags in tags[0].find_all('a', attrs={'class': 'text-link'}):
         typelist.append(atags.text.strip())
-    movie_type = '-'.join(typelist)
+    movie_type = '/'.join(typelist)
     mylist = [movie['name'], show, movie_type]
     return mylist
 
