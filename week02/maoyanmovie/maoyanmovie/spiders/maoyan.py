@@ -25,13 +25,16 @@ class MaoyanSpider(scrapy.Spider):
         movies = Selector(response=response).xpath('//div[@class="channel-detail movie-item-title"]')
         for index,movie in enumerate(movies):
             if index < 10:
-                item = MaoyanmovieItem()
-                name = movie.xpath('./a/text()').extract_first().strip()
-                link = movie.xpath('./a/@href').extract_first().strip()
-                item['name'] = name
-                item['link'] = link
-                link = f'https://maoyan.com{link}'
-                yield scrapy.Request(url=link, meta={'item': item}, callback=self.parse2)
+                try:
+                    item = MaoyanmovieItem()
+                    name = movie.xpath('./a/text()').extract_first().strip()
+                    link = movie.xpath('./a/@href').extract_first().strip()
+                    item['name'] = name
+                    item['link'] = link
+                    link = f'https://maoyan.com{link}'
+                    yield scrapy.Request(url=link, meta={'item': item}, callback=self.parse2)
+                except Exception as e:
+                    print(e)
 
     # 解析具体页面
     def parse2(self, response):
